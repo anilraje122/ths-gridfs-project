@@ -1,6 +1,7 @@
 var express = require("express");
 var router = express.Router();
-const { body, validationResult } = require("express-validator");
+const { body } = require("express-validator");
+const { registerController } = require("../controllers/users.controller");
 
 router.post(
   "/register",
@@ -27,7 +28,7 @@ router.post(
     }),
     body("name", "Name is required").exists(),
   ],
-  (req, res) => {}
+  registerController
 );
 
 module.exports = router;
