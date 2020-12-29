@@ -19,14 +19,14 @@ router.post(
         }
       }
     ),
-    body("confirmPassword", "Password do not match").custom((val, { req }) => {
+    body("confirmPassword").custom((val, { req }) => {
       if (val === req.body.password) {
         return true;
       } else {
         throw new Error("Password does not match!");
       }
     }),
-    body("name", "Name is required").exists(),
+    body("name", "Enter a valid name").exists().isLength({ min: 2 }),
   ],
   registerController
 );
