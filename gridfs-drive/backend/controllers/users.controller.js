@@ -9,7 +9,7 @@ const registerController = async (req, res) => {
     if (!errors.isEmpty()) {
       return res.status(400).json({ errors: errors.array() });
     }
-    const { email, apssword, name } = req.body;
+    const { email, password, name } = req.body;
     let user = await User.findOne({ email });
     if (user) {
       return res.status(400).json({ errors: [{ msg: "User Already Exist" }] });
@@ -23,7 +23,7 @@ const registerController = async (req, res) => {
       if (err) {
         throw err;
       } else {
-        res.status(200).json({ token: jwtToken });
+        res.status(200).json({ jwtToken: token });
       }
     });
   } catch (err) {
