@@ -3,6 +3,7 @@ var logger = require("morgan");
 const db = require("./config/dbConnect");
 
 var usersRouter = require("./routes/users.route");
+var filesRouter = require("./routes/file.route");
 
 var app = express();
 
@@ -11,6 +12,7 @@ app.use(logger("dev"));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
-app.use("/api/users", usersRouter);
+app.use("/api/user", usersRouter);
+app.use("/api/file", filesRouter);
 
 module.exports = app;

@@ -1,7 +1,12 @@
 var express = require("express");
 var router = express.Router();
 const { body } = require("express-validator");
-const { registerController } = require("../controllers/users.controller");
+const {
+  registerController,
+  loginController,
+  getUser,
+} = require("../controllers/users.controller");
+const auth = require("../middleware/auth.middleware");
 
 router.post(
   "/register",
@@ -30,5 +35,27 @@ router.post(
   ],
   registerController
 );
+
+router.post(
+  "/login",
+  [
+    body("email", "Enter a valid email address").isEmail(),
+    body("password", "Enter a valid password. (8 char alphanumeric)").custom(
+      (val) => {
+        const regex = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/;
+        if (regex.test(val)) {
+          return true;
+        } else {
+          throw new Error(
+            "Password must contain 8 chars and must have 1 letter and 1 number"
+          );
+        }
+      }
+    ),
+  ],
+  loginController
+);
+
+router.get("/", auth, getUser);
 
 module.exports = router;

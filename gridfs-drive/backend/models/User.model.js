@@ -35,6 +35,18 @@ userSchema.pre("save", async function () {
   }
 });
 
+userSchema.statics.findByCredentials = async (email, password) => {
+  const user = await User.findOne({ email });
+  if (!user) {
+    return { error: true, msg: "Auth Error" };
+  }
+  const isMatch = await bcrypt.compare(password, user.password);
+  if (!isMatch) {
+    return { error: true, msg: "Auth Error" };
+  }
+  return { error: false, user };
+};
+
 const User = mongoose.model("User", userSchema);
 
 module.exports = User;
