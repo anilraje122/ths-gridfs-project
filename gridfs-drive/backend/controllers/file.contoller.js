@@ -1,4 +1,4 @@
-const { gridFileUpload } = require("../utils/gridfs");
+const { gridFileUpload, gridGetAllUserFiles } = require("../utils/gridfs");
 
 const uploadFile = async (req, res) => {
   try {
@@ -10,4 +10,14 @@ const uploadFile = async (req, res) => {
   }
 };
 
-module.exports = { uploadFile };
+const getAllFiles = async (req, res) => {
+  try {
+    let files = await gridGetAllUserFiles(req.userId);
+    res.send(files);
+  } catch (err) {
+    console.log(err);
+    res.status(500).json({ errors: [{ msg: "Internal Server Error" }] });
+  }
+};
+
+module.exports = { uploadFile, getAllFiles };
